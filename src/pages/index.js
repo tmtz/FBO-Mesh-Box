@@ -12,7 +12,9 @@ const Controls = () => {
   useRender(() => {
     orbitRef.current.update()
   })
-  return <orbitControls args={[camera, gl.domElement]} ref={orbitRef} />
+  return (
+    <orbitControls autoRotate args={[camera, gl.domElement]} ref={orbitRef} />
+  )
 }
 
 const FBOBox = () => {
