@@ -37,8 +37,10 @@ const FBOBox = () => {
       onClick={() => setActive(pre => !pre)}
       scale={props.scale}
     >
+      <ambientLight />
+      <spotLight />
       <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-      <a.meshBasicMaterial attach="material" color={props.color} />
+      <a.meshPhysicalMaterial attach="material" color={props.color} />
     </a.mesh>
   )
 }
