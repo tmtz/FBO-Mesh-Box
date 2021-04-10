@@ -1,11 +1,21 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import * as THREE from "three"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 import { Canvas, extend, useThree, useRender } from "react-three-fiber"
 import { useSpring, a } from "react-spring/three"
 import "./style.css"
 //To use it as JS
 extend({ OrbitControls })
+
+const SpaceShip = () => {
+  const [model, setModel] = useState()
+  useEffect(() => {
+    new GLTFLoader().load("/scene.gltf", setModel)
+  })
+
+  return model ? <primitive object={model.scene} /> : null
+}
 
 const Controls = () => {
   const orbitRef = useRef()
@@ -46,8 +56,8 @@ const FBOBox = () => {
       scale={props.scale}
       castShadow
     >
-      <ambientLight />
-      <spotLight penumbra={1} position={[0, 5, 10]} castShadow />
+      {/* <ambientLight />
+      <spotLight penumbra={1} position={[0, 5, 10]} castShadow /> */}
       <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
       <a.meshPhysicalMaterial attach="material" color={props.color} />
     </a.mesh>
@@ -55,16 +65,22 @@ const FBOBox = () => {
 }
 
 export default () => (
-  <Canvas
-    camera={{ position: [0, 0, 5] }}
-    onCreated={({ gl }) => {
-      gl.shadowMap.enable = true
-      gl.shadowMap.type = THREE.PCFSoftShadowMap
-    }}
-  >
-    <fog attach="fog" args={["white", 5, 15]} />
-    <Controls />
-    <FBOBox />
-    <Plane />
-  </Canvas>
+  <>
+    <Canvas
+      camera={{ position: [0, 0, 5] }}
+      onCreated={({ gl }) => {
+        gl.shadowMap.enable = true
+        gl.shadowMap.type = THREE.PCFSoftShadowMap
+      }}
+    >
+      <ambientLight intesitiy={0.5} />
+      <spotLight penumbra={1} position={[15, 20, 5]} castShadow />
+      <fog attach="fog" args={["black", 10, 25]} />
+      <Controls />
+      {/* <FBOBox /> */}
+      {/* <Plane /> */}
+      <SpaceShip />
+    </Canvas>
+    <h1>Hallo FBO</h1>
+  </>
 )

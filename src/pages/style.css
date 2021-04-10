@@ -1,9 +1,23 @@
-body, 
-html,  
+body,
+html,
 #___gatsby,
-canvas{
-height:100%;
-width: 100%;
-margin:0;
-padding:0;
+canvas {
+  background: black;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: black;
+}
+
+h1 {
+  font-weight: 800;
+  font-size: 8em;
+  text-align: center;
+  color: red;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
