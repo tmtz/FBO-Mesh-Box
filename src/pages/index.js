@@ -1,28 +1,33 @@
 import React, { useState, useRef } from "react"
-
-import { Canvas, useRender } from "react-three-fiber"
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+import { Canvas, extend, useThree, useRender } from "react-three-fiber"
 import { useSpring, a } from "react-spring/three"
 import "./style.css"
+//To use it as JS
+extend({ OrbitControls })
+
+const Controls = () => {
+  const orbitRef = useRef()
+  const { camera, gl } = useThree()
+  useRender(() => {
+    orbitRef.current.update()
+  })
+  return <orbitControls args={[camera, gl.domElement]} ref={orbitRef} />
+}
 
 const FBOBox = () => {
-  const meshRef = useRef()
   const [hovered, setHovered] = useState(false)
   const [active, setActive] = useState(false)
   const props = useSpring({
     scale: active ? [1.5, 1.5, 1.5] : [1, 1, 1],
     color: hovered ? "hotpink" : "gray",
   })
-  useRender(() => {
-    meshRef.current.rotation.y += 0.01
-  })
   return (
     <a.mesh
-      ref={meshRef}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
       onClick={() => setActive(pre => !pre)}
       scale={props.scale}
-      // scale={active ? [1.5, 1.5, 1.5] : [1, 1, 1]}
     >
       <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
       <a.meshBasicMaterial attach="material" color={props.color} />
@@ -32,6 +37,7 @@ const FBOBox = () => {
 
 export default () => (
   <Canvas>
+    <Controls />
     <FBOBox />
   </Canvas>
 )
